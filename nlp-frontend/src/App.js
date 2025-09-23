@@ -8,11 +8,12 @@ function App() {
     season: "",
     state: "",
     area: "",
-    production: "",
     annual_rainfall: "",
     fertilizer: "",
     pesticide: "",
-    budget: ""
+    budget: "",
+    goal: "",        // ✅ Required by backend
+    production: "",  // ✅ Added Production field
   });
 
   const [result, setResult] = useState(null);
@@ -27,7 +28,7 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/recommend", {
+      const response = await fetch("http://127.0.0.1:8000/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -56,32 +57,35 @@ function App() {
           <option value="">Select Season</option>
           <option value="Rabi">Rabi</option>
           <option value="Kharif">Kharif</option>
-          <option value="Kharif">Whole Year</option>
-          <option value="Kharif">Summer</option>
-          <option value="Kharif">Winter</option>
-          <option value="Kharif">Autumn</option>
+          <option value="Whole Year">Whole Year</option>
+          <option value="Summer">Summer</option>
+          <option value="Winter">Winter</option>
+          <option value="Autumn">Autumn</option>
         </select>
 
         <label>State:</label>
         <input type="text" name="state" value={formData.state} onChange={handleChange} required />
 
         <label>Area (ha):</label>
-        <input type="number" name="area" value={formData.area} onChange={handleChange} required />
+        <input type="number" name="area" value={formData.area} onChange={handleChange} required min="0" />
 
         <label>Production (tons):</label>
-        <input type="number" name="production" value={formData.production} onChange={handleChange} required />
+        <input type="number" name="production" value={formData.production} onChange={handleChange} required min="0" />
 
         <label>Annual Rainfall (mm):</label>
-        <input type="number" name="annual_rainfall" value={formData.annual_rainfall} onChange={handleChange} required />
+        <input type="number" name="annual_rainfall" value={formData.annual_rainfall} onChange={handleChange} required min="0" />
 
         <label>Fertilizer (kg):</label>
-        <input type="number" name="fertilizer" value={formData.fertilizer} onChange={handleChange} required />
+        <input type="number" name="fertilizer" value={formData.fertilizer} onChange={handleChange} required min="0" />
 
         <label>Pesticide (kg):</label>
-        <input type="number" name="pesticide" value={formData.pesticide} onChange={handleChange} required />
+        <input type="number" name="pesticide" value={formData.pesticide} onChange={handleChange} required min="0" />
 
         <label>Budget (INR):</label>
-        <input type="number" name="budget" value={formData.budget} onChange={handleChange} required />
+        <input type="number" name="budget" value={formData.budget} onChange={handleChange} required min="0" />
+
+        <label>Goal:</label>
+        <input type="text" name="goal" value={formData.goal} onChange={handleChange} required />
 
         <button type="submit" disabled={loading}>
           {loading ? "Processing..." : "Get Recommendation"}
@@ -90,9 +94,11 @@ function App() {
 
       {result && (
         <div className="result-box">
-          <h2>📊 Prediction Result</h2>
-          <p><strong>Predicted Yield:</strong> {result.predicted_yield} t/ha</p>
-          <h3>📝 Recommendation:</h3>
+          <h2>Prediction Result</h2>
+          <p>
+            <strong>Predicted Yield:</strong> {result.predicted_yield} t/ha
+          </p>
+          <h3>Recommendation:</h3>
           <p>{result.recommendation}</p>
         </div>
       )}

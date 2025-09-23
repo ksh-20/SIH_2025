@@ -1,6 +1,6 @@
 crop_nlp_model/
 results/
-ml_model.pkl
+ml_model.pk1
 
 # dependencies
 /node_modules/
@@ -25,3 +25,5 @@ yarn-error.log*
 *.pem
 
 .vscode/
+
+backend/__pycache__
