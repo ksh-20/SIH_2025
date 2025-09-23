@@ -12,8 +12,8 @@ function App() {
     fertilizer: "",
     pesticide: "",
     budget: "",
-    goal: "",        // ✅ Required by backend
-    production: "",  // ✅ Added Production field
+    goal: "",      
+    production: "", 
   });
 
   const [result, setResult] = useState(null);
